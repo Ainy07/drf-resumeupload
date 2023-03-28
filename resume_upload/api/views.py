@@ -11,8 +11,17 @@ class ProfileView(APIView):
         serializer = ProfileSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response({'msg': 'Resume Uploaded Successfully', 
+            return Response({'msg': 'Resume Uploaded Successfully',
                              'status': 'success', 'canidate': serializer.data},
                             status=status.HTTP_201_CREATED)
         return Response(serializer.error)
-        
+
+    def get(self, request, format=None):
+        candidates = Profile.objects.all()
+        serializer = ProfileSerializer(candidates, many=True)
+        return Response({'status': 'success', 'candidates': serializer.data}, status=status.HTTP_200_OK)
+
+    def delete(self, request, format=None):
+        candidates = Profile.objects.all()
+        # serializer = ProfileSerializer.all()
+        return Response({'status': 'success'})
